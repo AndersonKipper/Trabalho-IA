@@ -13,45 +13,51 @@ public class PerceptronMLP {
 		
 		Neuronio neuronio[] = new Neuronio[7];
 		
-		String arquivoCSV = "C:\\Users\\106289810\\Desktop\\winequality-white.csv";//dargs[0];
+		String arquivoCSV = "C:\\Users\\Daniel\\Desktop\\winequality-white.csv";//dargs[0];
 	    BufferedReader br = null;
 	    String linha = "";
 	    String csvDivisor = ";";
 	    try {
-
+	    	
+	    	int L = 5000; //quantidade de linhas do arquivo, tem que ver como vai pegar depois
+	    	int C = 12; //colunas do arquivo, ver como pegar depois
+	    	
+	    	double entradas[][] = new double[C][L];
+	    	double saidaDesejada[] = new double[L];
+	    	
+	    	br = new BufferedReader(new FileReader(arquivoCSV));
+	        br.readLine();
 	        
-	        
-	        for(int n = 0; n < neuronio.length; n++){
+	        int j=0;
+	        while ((linha = br.readLine()) != null) {
 	        	
-	        	neuronio[n] = new Neuronio();
-	        	br = new BufferedReader(new FileReader(arquivoCSV));
-		        br.readLine();
-		        int i = 0;
-			        while ((linha = br.readLine()) != null) {
-		
-			            String[] pesos = linha.split(csvDivisor);
-			            
-			            neuronio[n].setW0(1);
-			            neuronio[n].setW1(Double.parseDouble(pesos[0]));
-			            neuronio[n].setW2(Double.parseDouble(pesos[1]));
-			            neuronio[n].setW3(Double.parseDouble(pesos[2]));
-			            neuronio[n].setW4(Double.parseDouble(pesos[3]));
-			            neuronio[n].setW5(Double.parseDouble(pesos[4]));
-			            neuronio[n].setW6(Double.parseDouble(pesos[5]));
-			            neuronio[n].setW7(Double.parseDouble(pesos[6]));
-			            neuronio[n].setW8(Double.parseDouble(pesos[7]));
-			            neuronio[n].setW9(Double.parseDouble(pesos[8]));
-			            neuronio[n].setW10(Double.parseDouble(pesos[9]));
-			            neuronio[n].setW11(Double.parseDouble(pesos[10]));
-			            
-			            
-			            System.out.print("neuronio-" + n + " linha: " + i + "\tN0: " + neuronio[n].getW0() + " N1: " + neuronio[n].getW1()+ " N2: " + neuronio[n].getW2() + " N3: " + " " + neuronio[n].getW3() + " N4: " + neuronio[n].getW4() + " N5: " + neuronio[n].getW5() + "\n");
-			            i++;
-			        }
-			        br.close();
+	        	String[] pesos = linha.split(csvDivisor);
+	        	
+	        	int i;
+	        	for(i=0; i < C-1; i++){
+	        	   entradas[i][j] = Double.parseDouble(pesos[i]);
+	        	}
+	        	saidaDesejada[j] = Double.parseDouble(pesos[i]);
+	        	j++;
 	        }
+	        	
 	        
-	        
+	        /* Imprime a matriz só para teste */
+	        	for(int i=0; i < C-1; i++){
+	        		for(j=0; j < 20; j++){
+	        	       System.out.print(entradas[i][j] + " \t ");
+	        	    }
+	        	    System.out.print("\n");
+	           }
+	           System.out.print("\n ---------Saída desejada -------------\n");
+	           for(j=0; j < 20; j++){
+	        	    System.out.print(saidaDesejada[j] + " \t ");
+	           }
+
+	        	
+	        	
+	        	
+	        br.close();
 	        
 
 	    } catch (FileNotFoundException e) {
@@ -71,3 +77,4 @@ public class PerceptronMLP {
 	}
 
 }
+

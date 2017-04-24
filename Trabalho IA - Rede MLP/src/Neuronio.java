@@ -2,7 +2,7 @@ public class Neuronio {
 	// Neuronio para 2 entradas
 
 	private double w []; // pesos
-	
+    
 	
 	Neuronio(int entradas){
 		this.w = new double[entradas];

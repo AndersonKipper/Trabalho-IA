@@ -63,24 +63,49 @@ public class PerceptronMLP {
 	        while ((linha = br.readLine()) != null) {
 	        	
 	        	String[] pesos = linha.split(csvDivisor);
-	        	double entrada;
+	        	double [] entrada = new double[pesos.length];
+	        	double y[] = new double[neuronioCamOcult.length];
+	        	double ySaida[] = new double[neuronioSaida.length];
+	        	double erro, d;
 	        	
-	        	//Kipper 21/04 -- inicio
 				for (int n = 0; n < 1/*neuronioCamOcult.length*/; n++) {
-					for (int i = 0; i < pesos.length - 1; i++) { // w0 foi setado no inicializador
+					d = (Double.parseDouble(pesos[pesos.length -1])); //converter para binario
+					
+					for (int i = 0; i < pesos.length - 1; i++) { 
 						
 						/* c1' = (c1 - cMin) / (cMax - c/min) */
 						
-						entrada = (Double.parseDouble(pesos[i]) / 10);
 						
-						neuronioCamOcult[n].setW(Double.parseDouble(pesos[i]), i + 1);
+						entrada[i] = (Double.parseDouble(pesos[i]));//normalizar entre 0 e 1
+						
+
+						
 
 					}
-
+					
+					y[n] = neuronioCamOcult[n].calculaY(entrada);
+					//neuronioCamOcult[n].setW(entrada, i + 1);
+					
+					//Camada saida
+					for(int n2 = 0; n2 < neuronioSaida.length; n2++){
+					
+						neuronioSaida[n2] = new Neuronio(y.length);
+						ySaida[n2] = neuronioSaida[n2].calculaY(y); 
+						
+						
+					}
+					
+					//fazer um IF testando retorno ySaida com binario
+					
+					
 					System.out.print(neuronioCamOcult[n].toString(0));
 				}
-	        	break;
-	        	//Kipper 21/04 -- fim
+				
+				
+				
+				
+	        	break;//apagar
+	        	
 	        	
 	        	
 	        	

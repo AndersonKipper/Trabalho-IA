@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 
 import org.json.JSONObject;
 
@@ -65,24 +66,34 @@ public class PerceptronMLP {
 	        	String[] pesos = linha.split(csvDivisor);
 	        	double [] entrada = new double[pesos.length];
 	        	double y[] = new double[neuronioCamOcult.length];
-	        	double ySaida[] = new double[neuronioSaida.length];
-	        	double erro, d;
+	        	int ySaida[] = new int[neuronioSaida.length];
+	        	int erro[] = new int[neuronioSaida.length];
+	        	int d[] = new int[neuronioSaida.length];
+	        	
 	        	
 				for (int n = 0; n < 1/*neuronioCamOcult.length*/; n++) {
-					d = (Double.parseDouble(pesos[pesos.length -1])); //converter para binario
+					String saida = getBinario(Integer.parseInt(pesos[pesos.length -1])); //converter para binario
 					
-					for (int i = 0; i < pesos.length - 1; i++) { 
+					//System.out.print("\n" + saida + ": ");
+				    for(int c = 0; c < saida.length(); c++){
+				    	d[c] = Integer.parseInt(saida.charAt(c)+"");
+				    	//System.out.print("\n" + c + " -- " + d[c]);
+				    }
+							
+					entrada[0] = 1;
+					
+					for (int i = 1; i < pesos.length; i++) { 
 						
 						/* c1' = (c1 - cMin) / (cMax - c/min) */
 						
 						
-						entrada[i] = (Double.parseDouble(pesos[i]));//normalizar entre 0 e 1
-						
+						entrada[i] = (Double.parseDouble(pesos[i-1]));//normalizar entre 0 e 1
+						System.out.print("\n" + i + " -- ");
 
 						
 
 					}
-					
+					System.out.print(" saiu ");
 					y[n] = neuronioCamOcult[n].calculaY(entrada);
 					//neuronioCamOcult[n].setW(entrada, i + 1);
 					
@@ -91,14 +102,26 @@ public class PerceptronMLP {
 					
 						neuronioSaida[n2] = new Neuronio(y.length);
 						ySaida[n2] = neuronioSaida[n2].calculaY(y); 
+						//System.out.print("ysaida: " + ySaida[n2] + "\n");
 						
+					  
+						//fazer um IF testando retorno ySaida com binario
+						//Os 4 precisam estaar corretos para passar? o if deve ter os 4 ou um de cada vez?
+						if(ySaida[n2] == d[n2]){
+							System.out.print("foi\n");
+						}else{
+							System.out.print("nao deu\n" + ySaida[n2] + " -> ");
+							
+							//System.out.print(getBinarioDecimal(saidaBinaria));
+							
+							erro[n2] = d[n2] - ySaida[n2]; //ver se eh double
+							
+							//DESCOBRIR como calcular o gradiente
+							//neuronioSaida[n2].calculaGradienteSaida(v, erro);
+						}
 						
 					}
 					
-					//fazer um IF testando retorno ySaida com binario
-					
-					
-					System.out.print(neuronioCamOcult[n].toString(0));
 				}
 				
 				
@@ -153,6 +176,22 @@ public class PerceptronMLP {
 	    }
 
 	}
-
+	
+	private static String getBinario(int num){
+		String binario = Integer.toBinaryString(num).toString();
+		System.out.print(binario + " -- " + num);
+		return binario;
+	}
+	
+	private static int getBinarioDecimal(String binario){
+		int num = 0, p = 1;
+		for(int i = binario.length()-1 ; i >= 0; i-- ){
+			num += Integer.parseInt(binario.charAt(i) + "") * p;
+			//System.out.print(num + " -x- " + p + "\n");
+			p = p * 2;
+		}
+		
+		return num;
+	}
 }
 

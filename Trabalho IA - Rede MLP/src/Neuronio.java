@@ -6,7 +6,7 @@ public class Neuronio {
 	
 	Neuronio(int entradas){
 		this.w = new double[entradas];
-		this.w[0] = 1;
+		//this.w[0] = 1;
 	}
 	
 	public double getW(int pos) {
@@ -18,8 +18,9 @@ public class Neuronio {
 		
 		double v = w[0];
 		
-		for(int i = 0; i < x.length; i++){
-			v += w[i+1] * x[i];
+		for(int i = 1; i < x.length; i++){
+			System.out.print(w[i] + " - " + x[i] + "-> " + i + "\n" );
+			v += w[i] * x[i];
 		}
 		
 		return calculaQ(v);
@@ -40,7 +41,20 @@ public class Neuronio {
 			return 1;
 		return 0;
 	}
+	
+	public int calculaGradienteSaida(int v, int erro){
+		return (3 * v * erro);
+	}
 
+	public int calculaGradienteOculta(int v, int [] g, int [] w){ //verificar
+		int somatorio = 0;
+		
+		for(int i=0; i > g.length; i++){
+			somatorio += g[i] * w[i];
+		}
+		
+		return (3 * v * somatorio);
+	}
 	public void setW(double w, int pos) {
 		this.w[pos] = w;
 	}

@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream.GetField;
 
-import org.json.JSONObject;
 
 public class PerceptronMLP {
 
@@ -16,41 +15,23 @@ public class PerceptronMLP {
 		
 		Neuronio neuronioCamOcult[];
 		Neuronio neuronioSaida[];
+		Config config = new Config();
+		
 		int entradas;
 		double eta;
-		/* APRENDER A LER o ARQUIVO -->
-		 * // Realiza o Parse do JSON, criando um objeto JSONObject
-			JSONObject obj = new JSONObject(json);
-			
-			// Busca o nodo "signo", conforme definido pelo trabalho			
-			JSONObject objSigno = obj.getJSONObject("signo");
 		
-			for (String i : JSONObject.getNames(objSigno)){
-			
-				String trabalho = objSigno.getJSONObject(i).getString("trabalho");
-				String dinheiro = objSigno.getJSONObject(i).getString("dinheiro");
-				String amor = objSigno.getJSONObject(i).getString("amor");
-				String saude = objSigno.getJSONObject(i).getString("saude");
-				System.out.println(i + " \n " + trabalho + " - " + dinheiro + " - " + amor + " - "  + saude + "\n ------------------------");
-				
-			}
-		 */		
-		entradas = 12; //pegar do json -- 11 entradas + w0
-		neuronioCamOcult = new Neuronio[7];
-		neuronioSaida = new Neuronio[4];
-		eta = 1; //constante de aprendizado, trocar
+		entradas = (int) config.getEntrada();
+		int N = (int) config.getNeuronioCamOculta();
+		neuronioCamOcult = new Neuronio[N];
+		N = (int) config.getSaida();
+		neuronioSaida = new Neuronio[N];
+		eta = (int) config.getLearningRate();
 		
 		String arquivoCSV = "F:\\winequality-red.csv";//"C:\\Users\\Daniel\\Desktop\\winequality-white.csv";//dargs[0];
 	    BufferedReader br = null;
 	    String linha = "";
 	    String csvDivisor = ";";
 	    try {
-	    	
-	    	int L = 5000; //quantidade de linhas do arquivo, tem que ver como vai pegar depois
-	    	int C = 12; //colunas do arquivo, ver como pegar depois
-	    	
-	    	//double entradas[][] = new double[C][L];
-	    	//double saidaDesejada[] = new double[L];
 	    	
 	    	br = new BufferedReader(new FileReader(arquivoCSV));
 	        br.readLine();

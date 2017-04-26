@@ -17,7 +17,7 @@ public class PerceptronMLP {
 		Neuronio neuronioCamOcult[];
 		Neuronio neuronioSaida[];
 		int entradas;
-		
+		double eta;
 		/* APRENDER A LER o ARQUIVO -->
 		 * // Realiza o Parse do JSON, criando um objeto JSONObject
 			JSONObject obj = new JSONObject(json);
@@ -38,7 +38,7 @@ public class PerceptronMLP {
 		entradas = 12; //pegar do json -- 11 entradas + w0
 		neuronioCamOcult = new Neuronio[7];
 		neuronioSaida = new Neuronio[4];
-		
+		eta = 1; //constante de aprendizado, trocar
 		
 		String arquivoCSV = "F:\\winequality-red.csv";//"C:\\Users\\Daniel\\Desktop\\winequality-white.csv";//dargs[0];
 	    BufferedReader br = null;
@@ -66,10 +66,12 @@ public class PerceptronMLP {
 	        	String[] pesos = linha.split(csvDivisor);
 	        	double [] entrada = new double[pesos.length];
 	        	double y[] = new double[neuronioCamOcult.length];
-	        	int ySaida[] = new int[neuronioSaida.length];
-	        	int erro[] = new int[neuronioSaida.length];
-	        	int d[] = new int[neuronioSaida.length];
-	        	
+	        	int ySaida[] = new int[4];
+	        	int erro[] = new int[4];
+	        	int d[] = new int[4];
+	        	double gradienteSaida[] = new double[4];
+	        	double gradienteOculta[] = new double[neuronioCamOcult.length];
+	        	double gradienteSomatorio[] = new double[neuronioCamOcult.length];
 	        	
 				for (int n = 0; n < 1/*neuronioCamOcult.length*/; n++) {
 					String saida = getBinario(Integer.parseInt(pesos[pesos.length -1])); //converter para binario
@@ -117,7 +119,29 @@ public class PerceptronMLP {
 							erro[n2] = d[n2] - ySaida[n2]; //ver se eh double
 							
 							//DESCOBRIR como calcular o gradiente
-							//neuronioSaida[n2].calculaGradienteSaida(v, erro);
+							gradienteSaida[n2] = neuronioSaida[n2].calculaGradienteSaida(ySaida[n2], erro[n2]);
+						
+							//ajustar os pesos
+							
+							double deltaW[] = new double[neuronioCamOcult.length];
+							for(int w = 0, g = 0; w < neuronioCamOcult.length; w++, g++){
+								//delta
+								deltaW[w] = gradienteSaida[g] * eta;
+								
+								//ajuste
+								double oldW = neuronioSaida[n2].getW(w);
+								neuronioSaida[n2].setW(oldW + deltaW[w], w);
+								
+								System.out.printf("\nPeso novo W[" + w + "] = " + neuronioSaida[n2].getW(w) + "\n");
+								if(g == 3) g = 0;
+							}
+						
+						}
+						
+						//calcular gradiente camada oculta
+						//descobrir como pegar os w corretos
+						for(int w = 1, g = 0; w < entradas; w++, g++){
+							//??
 						}
 						
 					}

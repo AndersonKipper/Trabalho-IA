@@ -42,18 +42,18 @@ public class Neuronio {
 		return 0;
 	}
 	
-	public int calculaGradienteSaida(int v, int erro){
-		return (3 * v * erro);
+	public double calculaGradienteSaida(int v, double erro){
+		return (3 * Math.sqrt(v) * erro); //faz a raiz como se fosse uma derivada
 	}
 
-	public int calculaGradienteOculta(int v, int [] g, int [] w){ //verificar
+	public double calculaGradienteOculta(int v, int [] g, int [] w){ //verificar
 		int somatorio = 0;
 		
 		for(int i=0; i > g.length; i++){
 			somatorio += g[i] * w[i];
 		}
 		
-		return (3 * v * somatorio);
+		return (3 * Math.sqrt(v) * somatorio);
 	}
 	public void setW(double w, int pos) {
 		this.w[pos] = w;

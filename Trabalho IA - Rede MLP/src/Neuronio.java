@@ -19,7 +19,7 @@ public class Neuronio {
 		double v = w[0];
 		
 		for(int i = 1; i < x.length; i++){
-			System.out.print(w[i] + " - " + x[i] + "-> " + i + "\n" );
+			//System.out.print(w[i] + " - " + x[i] + "-> " + i + "\n" );
 			v += w[i] * x[i];
 		}
 		
@@ -36,7 +36,7 @@ public class Neuronio {
 
 	public int calculaY(double [] x) { // aplica a funcao
 		double v = calculaV(x);
-
+		//System.out.print("\n\nV = " + v);
 		if (v >= 0)
 			return 1;
 		return 0;
@@ -46,10 +46,10 @@ public class Neuronio {
 		return (3 * Math.sqrt(v) * erro); //faz a raiz como se fosse uma derivada
 	}
 
-	public double calculaGradienteOculta(int v, int [] g, int [] w){ //verificar
+	public double calculaGradienteOculta(double v, double [] g, double [] w){ //verificar
 		int somatorio = 0;
 		
-		for(int i=0; i > g.length; i++){
+		for(int i=0; i < g.length; i++){
 			somatorio += g[i] * w[i];
 		}
 		

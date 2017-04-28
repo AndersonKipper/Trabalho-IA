@@ -30,8 +30,10 @@ public class PerceptronMLP {
 		neuronioSaida = new Neuronio[N];
 		eta = (int) config.getLearningRate();
 		int epocas = 0;
-
-		String arquivoCSV = "F:\\winequality-red2.csv";// "C:\\Users\\Daniel\\Desktop\\winequality-white.csv";//dargs[0];
+		
+		String fase = args[0];
+		String arquivoCSV = args[1];
+		//String arquivoCSV = "F:\\winequality-red.csv";// "C:\\Users\\Daniel\\Desktop\\winequality-white.csv";//dargs[0];
 		BufferedReader br = null;
 		String linha = "";
 		String csvDivisor = ";";

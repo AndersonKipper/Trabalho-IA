@@ -45,12 +45,11 @@ public class Config {
             Saida = (Long) layer.get(2);
             //System.out.println("*******" + Saida + "*******"); //teste
             
-            /*
-            Iterator<Long> iterator = layer.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-            */
+            JSONArray pesos = (JSONArray) jsonObject.get("weights");
+            iterator = pesos.iterator();
+            
+            
+            
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

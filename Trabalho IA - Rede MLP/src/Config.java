@@ -7,7 +7,9 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class Config {
 	
@@ -15,6 +17,8 @@ public class Config {
 	static long Entrada;
 	static long NeuronioCamOculta;
 	static long Saida;
+    static List<Long> PcamadaOculta = new ArrayList<Long>(); //Pesos da camada oculta
+    static List<Long> PcamadaSaida = new ArrayList<Long>(); //Pesos da camada de saida
 
 	Config(){
 
@@ -33,7 +37,7 @@ public class Config {
             */
             
             JSONArray layer = (JSONArray) jsonObject.get("layers");
-            Iterator<Long> iterator = layer.iterator();
+           
             
             
             Entrada = (Long) layer.get(0);
@@ -46,10 +50,32 @@ public class Config {
             //System.out.println("*******" + Saida + "*******"); //teste
             
             JSONArray pesos = (JSONArray) jsonObject.get("weights");
-            iterator = pesos.iterator();
+            Iterator<Long> iterator = pesos.iterator();
+
+            int camada=0;		
+            for(int i=0; i < pesos.size() ; i++){
+            	JSONArray pesos1 = (JSONArray) pesos.get(i);
+            	for(int y=0; y < pesos1.size() ; y++){
+            		JSONArray pesos2 = (JSONArray) pesos1.get(y);
+            		for(int t=0; t < pesos2.size() ; t++){
+            			if(camada == 0) PcamadaOculta.add((Long) pesos2.get(t));
+            			else PcamadaSaida.add((Long) pesos2.get(t));
+            			
+            			//System.out.print("*" + pesos2.get(t) + "*"); //teste
+            		}
+            		//System.out.print("|||");
+            	}
+            	camada++;
+            	//System.out.print("\n");
+            }
             
+          //System.out.print("*" + PcamadaSaida.get(16) + "*"); //teste
             
-            
+            /*
+            while (iterator.hasNext()) {
+                System.out.println(":::::::::" + iterator.next());
+            }
+           */
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -77,5 +103,12 @@ public class Config {
  		return NeuronioCamOculta;
  	}
     
+    public List<Long> PcamadaOculta(){
+ 		return PcamadaOculta;
+ 	}
+    
+    public List<Long> PcamadaSaida(){
+ 		return PcamadaSaida;
+ 	}
 
 }
